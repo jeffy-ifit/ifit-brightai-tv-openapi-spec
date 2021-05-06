@@ -24,7 +24,7 @@ components:
       properties:
         type:
           type: string
-          enum: [amazon, roku, tvos]
+          enum: [firetv, roku, tvos]
         userId:
           type: string
           example: 58951c6ea396e6290030ff71
@@ -33,7 +33,7 @@ components:
           example: roku.tv.ifit.beta
       discriminator:
         propertyName: type
-    AmazonValidateSubscriptionRequest:
+    FireTVValidateSubscriptionRequest:
       allOf:
         - $ref: '#/components/schemas/ValidateSubscriptionRequest'
         - type: object
@@ -42,7 +42,7 @@ components:
           properties:
             type:
               type: string
-              example: amazon
+              example: firetv
             fireTvUserId:
               type: string
               example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
@@ -54,15 +54,11 @@ components:
         - $ref: '#/components/schemas/ValidateSubscriptionRequest'
         - type: object
           required:
-            # - channelId
             - transactionId
           properties:
             type:
               type: string
               example: roku
-            # channelId: # this is up for debate, it is currently unused although we do desire an environment identifier in it's place (ie Bright vs iFit, prod vs test/staging)
-            #   type: number
-            #   example: 251682
             transactionId:
               type: string
               example: d9dbdfecc5cc41cbb881ab750135029b
@@ -127,7 +123,7 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/AmazonValidateSubscriptionRequest'
+                - $ref: '#/components/schemas/FireTVValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/RokuValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/TVOSValidateSubscriptionRequest'
               discriminator:
