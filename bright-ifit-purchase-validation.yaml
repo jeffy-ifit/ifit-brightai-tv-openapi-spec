@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: iFit Validate TV-App Purchase Transaction API
+  description: Proposed BrightAPI-to-iFitAPI purchase transaction validation & subscription entitlement grant
+  version: 1.0.5
+  contact: {}
+components:
+  securitySchemes:
+    auth0:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token
+          scopes:
+            read: read
+            write: write
+  schemas:
+    ValidateSubscriptionRequest:
+      type: object
+      required:
+        - type
+        - userId
+        - applicatioinId
+      properties:
+        type:
+          type: string
+          enum: [amazon, roku, tvos]
+        userId:
+          type: string
+          example: 58951c6ea396e6290030ff71
+        applicationId:
+          type: string
+          example: roku.tv.ifit.beta
+      discriminator:
+        propertyName: type
+    AmazonValidateSubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - type: object
+          required:
+            - receiptId
+          properties:
+            type:
+              type: string
+              example: amazon
+            firetvUserId:
+              type: string
+              example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
+            receiptId:
+              type: string
+              example: wE1EG1gsEZI9q9UnI5YoZ2OxeoVKPdR5bvPMqyKQq5Y=:1:11
+    RokuValidateSubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - type: object
+          required:
+            # - channelId
+            - transactionId
+          properties:
+            type:
+              type: string
+              example: roku
+            # channelId: # this is up for debate, it is currently unused although we do desire an environment identifier in it's place (ie Bright vs iFit, prod vs test/staging)
+            #   type: number
+            #   example: 251682
+            transactionId:
+              type: string
+              example: d9dbdfecc5cc41cbb881ab750135029b
+    TVOSValidateSubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - type: object
+          required:
+            - receiptData
+            - subscriptionId # might not be necessary
+            - token # might not be necessary
+          properties:
+            type:
+              type: string
+              example: tvos
+            receiptData:
+              type: string
+              example: e2fFzZ...jg30TgwN30=
+            subscriptionId:
+              type: string
+              example: 3jklj
+            token:
+              type: string
+              example: j42ojkls
+    ValidateSubscriptionError:
+      description: Parsed response from respective IAP store transaction validation API. If code == 2xx, retryable = false, do not retry. If code != 2xx, retryable = true, may be worth retrying.
+      type: object
+      required:
+        - code
+        - title
+        - message
+        - retryable
+      properties:
+        code:
+          type: integer
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        message:
+          type: string
+        retryable:
+          type: boolean
+    ValidateSubscriptionResponse:
+      description: If isEntitled == true proceed, else an error object is also included with the response
+      type: object
+      required:
+        - isEntitled
+      properties:
+        isEntitled:
+          type: boolean
+        error:
+          $ref: '#/components/schemas/ValidateSubscriptionError'
+paths:
+  /v1/tv-app/validate:
+    post:
+      summary: Returns whether user is entitled to their purchase transaction
+      description: Proxy validation of purchase transaction to between iFitAPI & respective appstore API and performs the required updates on the user so they are entitled to what they have purchased
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/AmazonValidateSubscriptionRequest'
+                - $ref: '#/components/schemas/RokuValidateSubscriptionRequest'
+                - $ref: '#/components/schemas/TVOSValidateSubscriptionRequest'
+              discriminator:
+                propertyName: type
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateSubscriptionResponse'
+        '401':
+          description: 'Unauthorized token header'
+        '400':
+          description: 'Bad request parameters'
+        '404':
+          description: 'User or puchase item associated with the transaction was not found'
+        '500':
+          description: 'Something went wrong when attempting to entitle the user or general internal server error'
+      tags:
+        - Validate Purchase Transaction
