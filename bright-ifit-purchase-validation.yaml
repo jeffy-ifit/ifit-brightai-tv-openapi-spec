@@ -43,7 +43,7 @@ components:
             type:
               type: string
               example: amazon
-            firetvUserId:
+            fireTvUserId:
               type: string
               example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
             receiptId:
