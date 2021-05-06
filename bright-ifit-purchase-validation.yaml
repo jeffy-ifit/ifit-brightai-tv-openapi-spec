@@ -20,7 +20,7 @@ components:
       required:
         - type
         - userId
-        - applicatioinId
+        - applicationId
       properties:
         type:
           type: string
