@@ -39,6 +39,7 @@ components:
         - type: object
           required:
             - receiptId
+            - fireTvUserId
           properties:
             type:
               type: string
