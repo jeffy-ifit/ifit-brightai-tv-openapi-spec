@@ -70,7 +70,6 @@ components:
           required:
             - receiptData
             - subscriptionId # might not be necessary
-            - token # might not be necessary
           properties:
             type:
               type: string
@@ -81,9 +80,6 @@ components:
             subscriptionId:
               type: string
               example: 3jklj
-            token:
-              type: string
-              example: j42ojkls
     ValidateSubscriptionError:
       description: Parsed response from respective IAP store transaction validation API. If code == 2xx, retryable = false, do not retry. If code != 2xx, retryable = true, may be worth retrying.
       type: object
