@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: iFit Validate TV-App Purchase Transaction API
   description: Proposed BrightAPI-to-iFitAPI purchase transaction validation & subscription entitlement grant
-  version: 1.0.5
+  version: 1.0.6
   contact: {}
 components:
   securitySchemes:
@@ -24,7 +24,7 @@ components:
       properties:
         type:
           type: string
-          enum: [firetv, roku, tvos]
+          enum: [android, firetv, roku, tvos]
         userId:
           type: string
           example: 58951c6ea396e6290030ff71
@@ -33,6 +33,24 @@ components:
           example: roku.tv.ifit.beta
       discriminator:
         propertyName: type
+    AndroidTVValidateSubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - type: object
+          required:
+            - applicationId
+            - productId
+            - purchaseToken
+          properties:
+            type:
+              type: string
+              example: android
+            productId: # might be subscriptionId
+              type: string
+              example: ifryme
+            purchaseToken:
+              type: string
+              example: e2fFzZ...jg30TgwN30=
     FireTVValidateSubscriptionRequest:
       allOf:
         - $ref: '#/components/schemas/ValidateSubscriptionRequest'
@@ -120,6 +138,7 @@ paths:
           application/json:
             schema:
               oneOf:
+                - $ref: '#/components/schemas/AndroidTVValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/FireTVValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/RokuValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/TVOSValidateSubscriptionRequest'
