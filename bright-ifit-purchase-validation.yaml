@@ -30,7 +30,7 @@ components:
           example: 58951c6ea396e6290030ff71
         applicationId:
           type: string
-          example: roku.tv.ifit.beta
+          example: roku.ifit.tv.beta
       discriminator:
         propertyName: type
     AndroidTVValidateSubscriptionRequest:
@@ -45,6 +45,9 @@ components:
             type:
               type: string
               example: android
+            applicationId:
+              type: string
+              example: ai.bright.ifit.androidtv.beta
             productId: # might be subscriptionId
               type: string
               example: ifryme
@@ -62,6 +65,9 @@ components:
             type:
               type: string
               example: firetv
+            applicationId:
+              type: string
+              example: ai.bright.ifit.amazonfire.beta             
             fireTvUserId:
               type: string
               example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
@@ -92,6 +98,9 @@ components:
             type:
               type: string
               example: tvos
+            applicationId:
+              type: string
+              example: ai.bright.ifit.tvos.qa              
             receiptData:
               type: string
               example: e2fFzZ...jg30TgwN30=
