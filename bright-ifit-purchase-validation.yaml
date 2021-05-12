@@ -30,7 +30,15 @@ components:
           example: 58951c6ea396e6290030ff71
         applicationId:
           type: string
-          example: roku.ifit.tv.beta
+          enum:
+            - ai.bright.ifit.tvos.qa # tvOS Beta env, BrightAI dev account
+            - ai.bright.ifit.tvos.release # tvOS Prod env, iFit dev account
+            - ai.bright.ifit.androidtv.beta # Android Beta env, BrightAI dev account
+            - com.ifit.palantir.androidtv # Android Prod env, iFit dev account
+            - ai.bright.ifit.amazonfire.beta # Amazon Beta env, BrightAI dev account
+            - com.ifit.palantir.amazonfire # Amazon Prod env, iFit dev account
+            - roku.ifit.tv.beta # Roku Beta env, BrightAI dev account
+            - roku.ifit.tv.prod # Roku Prod env, iFit dev account
       discriminator:
         propertyName: type
     AndroidTVValidateSubscriptionRequest:
@@ -67,7 +75,7 @@ components:
               example: firetv
             applicationId:
               type: string
-              example: ai.bright.ifit.amazonfire.beta             
+              example: ai.bright.ifit.amazonfire.beta
             fireTvUserId:
               type: string
               example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
@@ -84,6 +92,9 @@ components:
             type:
               type: string
               example: roku
+            applicationId:
+              type: string
+              example: roku.ifit.tv.beta
             transactionId:
               type: string
               example: d9dbdfecc5cc41cbb881ab750135029b
@@ -100,7 +111,7 @@ components:
               example: tvos
             applicationId:
               type: string
-              example: ai.bright.ifit.tvos.qa              
+              example: ai.bright.ifit.tvos.qa
             receiptData:
               type: string
               example: e2fFzZ...jg30TgwN30=
