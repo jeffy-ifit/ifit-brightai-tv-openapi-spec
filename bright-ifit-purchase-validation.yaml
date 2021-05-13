@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: iFit Validate TV-App Purchase Transaction API
   description: Proposed BrightAPI-to-iFitAPI purchase transaction validation & subscription entitlement grant
-  version: 1.0.5
+  version: 1.0.6
   contact: {}
 components:
   securitySchemes:
@@ -24,15 +24,44 @@ components:
       properties:
         type:
           type: string
-          enum: [firetv, roku, tvos]
+          enum: [android, firetv, roku, tvos]
         userId:
           type: string
           example: 58951c6ea396e6290030ff71
         applicationId:
           type: string
-          example: roku.tv.ifit.beta
+          enum:
+            - ai.bright.ifit.tvos.qa # tvOS Beta env, BrightAI dev account
+            - ai.bright.ifit.tvos.release # tvOS Prod env, iFit dev account
+            - ai.bright.ifit.androidtv.beta # Android Beta env, BrightAI dev account
+            - com.ifit.palantir.androidtv # Android Prod env, iFit dev account
+            - ai.bright.ifit.amazonfire.beta # Amazon Beta env, BrightAI dev account
+            - com.ifit.palantir.amazonfire # Amazon Prod env, iFit dev account
+            - roku.ifit.tv.beta # Roku Beta env, BrightAI dev account
+            - roku.ifit.tv.prod # Roku Prod env, iFit dev account
       discriminator:
         propertyName: type
+    AndroidTVValidateSubscriptionRequest:
+      allOf:
+        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - type: object
+          required:
+            - applicationId
+            - subscriptionId
+            - purchaseToken
+          properties:
+            type:
+              type: string
+              example: android
+            applicationId:
+              type: string
+              example: ai.bright.ifit.androidtv.beta
+            subscriptionId:
+              type: string
+              example: ifryme # TODO eventually need to confirm this example
+            purchaseToken:
+              type: string
+              example: e2fFzZ...jg30TgwN30=
     FireTVValidateSubscriptionRequest:
       allOf:
         - $ref: '#/components/schemas/ValidateSubscriptionRequest'
@@ -44,6 +73,9 @@ components:
             type:
               type: string
               example: firetv
+            applicationId:
+              type: string
+              example: ai.bright.ifit.amazonfire.beta
             fireTvUserId:
               type: string
               example: l3HL7XppEMhrOGDnur9-ulvqomrSg6qyODKmah76lJU=
@@ -60,6 +92,9 @@ components:
             type:
               type: string
               example: roku
+            applicationId:
+              type: string
+              example: roku.ifit.tv.beta
             transactionId:
               type: string
               example: d9dbdfecc5cc41cbb881ab750135029b
@@ -74,6 +109,9 @@ components:
             type:
               type: string
               example: tvos
+            applicationId:
+              type: string
+              example: ai.bright.ifit.tvos.qa
             receiptData:
               type: string
               example: e2fFzZ...jg30TgwN30=
@@ -120,6 +158,7 @@ paths:
           application/json:
             schema:
               oneOf:
+                - $ref: '#/components/schemas/AndroidTVValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/FireTVValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/RokuValidateSubscriptionRequest'
                 - $ref: '#/components/schemas/TVOSValidateSubscriptionRequest'
