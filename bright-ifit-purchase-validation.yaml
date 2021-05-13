@@ -47,7 +47,7 @@ components:
         - type: object
           required:
             - applicationId
-            - productId
+            - subscriptionId
             - purchaseToken
           properties:
             type:
@@ -56,9 +56,9 @@ components:
             applicationId:
               type: string
               example: ai.bright.ifit.androidtv.beta
-            productId: # might be subscriptionId
+            subscriptionId:
               type: string
-              example: ifryme
+              example: ifryme # TODO eventually need to confirm this example
             purchaseToken:
               type: string
               example: e2fFzZ...jg30TgwN30=
