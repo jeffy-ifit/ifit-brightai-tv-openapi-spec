@@ -147,6 +147,37 @@ components:
           type: boolean
         error:
           $ref: '#/components/schemas/ValidateSubscriptionError'
+    UserSubscriptionInfoResponse:
+      description: ''
+      type: object
+      required:
+        - accountSource
+        - sku
+        - subscriptionManagementUrl
+      properties:
+        accountSource:
+          type: string
+          enum:
+            - none
+            - icon
+            - android
+            - ios
+            - amazon
+            - firetv
+            - roku
+            - tvos
+            - androidtv
+        sku:
+          type: string
+        subscriptionManagementUrl:
+          type: string
+          enum:
+            - https://www.amazon.com/yourmembershipsandsubscriptions?ref_=ya_d_l_mng_subscriptions
+            - https://play.google.com/store/account/subscriptions
+            - https://support.apple.com/en-us/HT202039
+            # - https://www.planetfitness.com/login
+            - https://my.roku.com/account/subscriptions
+            - https://www.amazon.com/yourmembershipsandsubscriptions
 paths:
   /v1/tv-app/validate:
     post:
@@ -181,3 +212,20 @@ paths:
           description: 'Something went wrong when attempting to entitle the user or general internal server error'
       tags:
         - Validate Purchase Transaction
+  /v1/tv-app/user-subscription-info/{userId}:
+    get:
+      summary: Returns some specific user subscription info
+      description: Provides particular user subscription info for BrightAI to cater what is displayed in the TV App purchase products catalogue
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSubscriptionInfoResponse'
+        '401':
+          description: 'Unauthorized token header'
+        '404':
+          description: 'User with the provided id was not found'
+        '500':
+          description: 'Internal server error'
