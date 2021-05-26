@@ -160,10 +160,11 @@ components:
           enum:
             - none
             - icon
-            - android
-            - ios
+            - shop
             - amazon
+            - android
             - firetv
+            - ios
             - roku
             - tvos
             # - androidtv
@@ -224,6 +225,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSubscriptionInfoResponse'
+        '400':
+          description: 'User does not have an active subscription'
         '401':
           description: 'Unauthorized token header'
         '404':
