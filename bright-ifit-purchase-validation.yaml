@@ -166,12 +166,13 @@ components:
             - firetv
             - roku
             - tvos
-            - androidtv
+            # - androidtv
         sku:
           type: string
         subscriptionManagementUrl:
           type: string
           enum:
+            - https://www.ifit.com/settings/membership-plan
             - https://www.amazon.com/yourmembershipsandsubscriptions?ref_=ya_d_l_mng_subscriptions
             - https://play.google.com/store/account/subscriptions
             - https://support.apple.com/en-us/HT202039
