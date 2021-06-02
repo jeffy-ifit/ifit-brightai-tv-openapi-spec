@@ -177,6 +177,8 @@ paths:
           description: 'Bad request parameters'
         '404':
           description: 'User or puchase item associated with the transaction was not found'
+        '410':
+          description: 'Subscription has expired/is no longer available'
         '500':
           description: 'Something went wrong when attempting to entitle the user or general internal server error'
       tags:
