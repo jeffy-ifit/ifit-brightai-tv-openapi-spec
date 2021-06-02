@@ -151,10 +151,13 @@ components:
       description: ''
       type: object
       required:
-        - accountSource
-        - sku
-        - subscriptionManagementUrl
+        - id
+        - hasActiveSubscription
       properties:
+        id:
+          type: string
+        hasActiveSubscription:
+          type: boolean
         accountSource:
           type: string
           enum:
@@ -229,6 +232,6 @@ paths:
         '401':
           description: 'Unauthorized token header'
         '404':
-          description: 'User with the provided id was not found or User does not have an active subscription'
+          description: 'User with the provided id was not found'
         '500':
           description: 'Internal server error'
