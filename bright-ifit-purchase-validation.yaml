@@ -151,10 +151,10 @@ components:
       description: ''
       type: object
       required:
-        - id
+        - userId
         - hasActiveSubscription
       properties:
-        id:
+        userId:
           type: string
         hasActiveSubscription:
           type: boolean
