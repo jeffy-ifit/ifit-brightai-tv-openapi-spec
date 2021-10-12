@@ -43,7 +43,7 @@ components:
         propertyName: type
     AndroidTVValidateSubscriptionRequest:
       allOf:
-        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - $ref: "#/components/schemas/ValidateSubscriptionRequest"
         - type: object
           required:
             - applicationId
@@ -64,7 +64,7 @@ components:
               example: e2fFzZ...jg30TgwN30=
     FireTVValidateSubscriptionRequest:
       allOf:
-        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - $ref: "#/components/schemas/ValidateSubscriptionRequest"
         - type: object
           required:
             - receiptId
@@ -84,7 +84,7 @@ components:
               example: wE1EG1gsEZI9q9UnI5YoZ2OxeoVKPdR5bvPMqyKQq5Y=:1:11
     RokuValidateSubscriptionRequest:
       allOf:
-        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - $ref: "#/components/schemas/ValidateSubscriptionRequest"
         - type: object
           required:
             - transactionId
@@ -100,7 +100,7 @@ components:
               example: d9dbdfecc5cc41cbb881ab750135029b
     TVOSValidateSubscriptionRequest:
       allOf:
-        - $ref: '#/components/schemas/ValidateSubscriptionRequest'
+        - $ref: "#/components/schemas/ValidateSubscriptionRequest"
         - type: object
           required:
             - receiptData
@@ -142,13 +142,16 @@ components:
       type: object
       required:
         - isEntitled
+        - sku
       properties:
         isEntitled:
           type: boolean
+        sku:
+          type: string
         error:
-          $ref: '#/components/schemas/ValidateSubscriptionError'
+          $ref: "#/components/schemas/ValidateSubscriptionError"
     UserSubscriptionInfoResponse:
-      description: ''
+      description: ""
       type: object
       required:
         - userId
@@ -195,43 +198,50 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/AndroidTVValidateSubscriptionRequest'
-                - $ref: '#/components/schemas/FireTVValidateSubscriptionRequest'
-                - $ref: '#/components/schemas/RokuValidateSubscriptionRequest'
-                - $ref: '#/components/schemas/TVOSValidateSubscriptionRequest'
+                - $ref: "#/components/schemas/AndroidTVValidateSubscriptionRequest"
+                - $ref: "#/components/schemas/FireTVValidateSubscriptionRequest"
+                - $ref: "#/components/schemas/RokuValidateSubscriptionRequest"
+                - $ref: "#/components/schemas/TVOSValidateSubscriptionRequest"
               discriminator:
                 propertyName: type
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidateSubscriptionResponse'
-        '401':
-          description: 'Unauthorized token header'
-        '400':
-          description: 'Bad request parameters'
-        '404':
-          description: 'User or puchase item associated with the transaction was not found'
-        '500':
-          description: 'Something went wrong when attempting to entitle the user or general internal server error'
+                $ref: "#/components/schemas/ValidateSubscriptionResponse"
+        "401":
+          description: "Unauthorized token header"
+        "400":
+          description: "Bad request parameters"
+        "404":
+          description: "User or puchase item associated with the transaction was not found"
+        "500":
+          description: "Something went wrong when attempting to entitle the user or general internal server error"
       tags:
         - Validate Purchase Transaction
   /v1/tv-app/users/{userId}/subscription-info:
     get:
       summary: Returns some specific user subscription info
       description: Provides particular user subscription info for BrightAI to cater what is displayed in the TV App purchase products catalogue
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: iFIT Mongo user id
       responses:
-        '200':
-          description: '200'
+        "200":
+          description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserSubscriptionInfoResponse'
-        '401':
-          description: 'Unauthorized token header'
-        '404':
-          description: 'User with the provided id was not found'
-        '500':
-          description: 'Internal server error'
+                $ref: "#/components/schemas/UserSubscriptionInfoResponse"
+        "401":
+          description: "Unauthorized token header"
+        "404":
+          description: "User with the provided id was not found"
+        "500":
+          description: "Internal server error"
